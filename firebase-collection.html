@@ -379,7 +379,12 @@ manipulation of the collection without direct knowledge of Firebase key values.
 
               added.forEach(function(added, index) {
                 this._lastLocallyAddedIndex = splice.index + index;
-                this.add(added);
+                //prevent readding items that already exist on the database
+                // this is a very hacky solution and not sure why it should work exactly !
+                // but waiting to migrate to v3.0 of the API
+                if (!added.__firebaseKey__) {
+                  this.add(added);
+                }
               }, this);
             }, this);
 
